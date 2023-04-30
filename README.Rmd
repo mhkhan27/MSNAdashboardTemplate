@@ -16,10 +16,13 @@ knitr::opts_chunk$set(
 )
 ```
 
-## MSNAdashboardTemplate
 
 <!-- badges: start -->
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Generic badge](https://img.shields.io/badge/STATUS-UNDER%20DEVELOPMENT-%23007CE0)](https://shields.io/)
+
+
 <!-- badges: end -->
 
 The goal of MSNAdashboardTemplate is to ...
@@ -155,10 +158,10 @@ You can do analysis using any tools or package or whatever you want but make sur
 
 #### STEP 006. Create text file
 
-The function `create_text_input()` will create the an excel file to be shown in the dashboard `overview` page
+The function `create_text_input()` will create the an excel file with two tab (1. `README`, 2. `text_input`). Please read the readme and then fill the `text_input` tab. 
 
 ```{r eval =FALSE}
-
+create_text_input(output_path = "[PATH]")
 ```
 
 
@@ -178,7 +181,7 @@ Ideally it will check all the module for the dashboard It should provide list of
 MSNAdashboardTemplate::create_dashboard(country = "Iraq",
                                assessment_name  = "McNA",
                                year = 2024,
-                               validated_analysis_file = validated_analysis_file,
+                               analysis_file = analysis_file,
                                key_index_column= key_index_column, 
                                stat_column = stat_column
                                ) 
@@ -190,21 +193,15 @@ MSNAdashboardTemplate::create_dashboard(country = "Iraq",
 
 In case you want to customize the dashboard, you can follow the following steps -
 
-#### Step 0.1.1 clone the repo
+#### Step 0.1.1 Clone the repo
 
-To customized the dashboard, you first needs to clone the repository from the github. 
-
-```{r eval =FALSE}
+To customized the dashboard, you first need to clone the repository from the [github](https://github.com/mhkhan27/MSNAdashboardTemplate). 
 
 
-
-```
-
-
-#### Step 0.1.1 understanding the repo
+#### Step 0.1.1 Understanding the repo
 Once you are done with the repo, now you need to understand the structure of repo. The repository is created using `golem` package. 
 
-##### What is golem
+##### What is golem?
 
 The `golem` package is a framework for building and deploying production-ready Shiny applications in R. Shiny is a web application framework for R that allows users to create interactive web applications using R code. However, while Shiny is great for creating interactive prototypes, it is not always well-suited for building production-ready applications with robust performance, security, and scalability.
 
@@ -239,7 +236,7 @@ The Golem package in R is designed to facilitate the creation of production-read
 
 9. `README.md:` This file contains information about your package, including how to install and use it
 
-```{r eval =T}
+```{r eval =T, echo=FALSE}
  fs::dir_tree()
 ```
 
@@ -247,11 +244,11 @@ The Golem package in R is designed to facilitate the creation of production-read
 
 With in the `R/` folder you will scripts started with `mod_` which I will be calling module. Each module represent a `tab` in the dashboard. Within the scripts, each module have two parts, 1. user interface (ui) 2. server. 
 
-#### Step 0.1.1 removing any module
+#### Step 0.1.1 Removing any module
 If you want to remove any module/tab from the dashboard, you can easily do it from `app_ui.R` and `app_server.R`. All you have to do is delete the module from both `app_ui` and `app_server`
 
 
-#### Step 0.1.1 adding any module
+#### Step 0.1.1 Adding any module
 
 If you want to add a new tab then you will need to create a module first and then add the module to the `app_ui.R` and `app_server.R`
 
@@ -261,7 +258,7 @@ golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the modu
 
 ```
 
-#### Step 0.1.1 changing any module
+#### Step 0.1.1 Changing any module
 You can change a specific tab without creating error in out tab by editing existing module. just make the changes in `mod_name_of_module1` and then you are all set. [Make sure you have made changes in both ui and server]
 
 
@@ -283,7 +280,7 @@ It is also important to run the CDM check. If your CDM check fails then the app 
 MSNAdashboardTemplate::create_dashboard(country = "Iraq",
                                assessment_name  = "McNA",
                                year = 2024,
-                               validated_analysis_file = validated_analysis_file,
+                               analysis_file = analysis_file,
                                key_index_column= key_index_column, 
                                stat_column = stat_column
                                ) 

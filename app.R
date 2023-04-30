@@ -6,6 +6,6 @@ pkgload::load_all(export_all = FALSE,helpers = FALSE,attach_testthat = FALSE)
 options( "golem.app.prod" = TRUE)
 
 
-MSNAdashboardTemplate::create_dashboard(country = "Iraq",
-                                        assessment_name =  "McNA",
+MSNAdashboardTemplate::create_dashboard(country = "lebanon",
+                                        assessment_name =  "MsNa",
                                         year = 2024) # add parameters here (if any)

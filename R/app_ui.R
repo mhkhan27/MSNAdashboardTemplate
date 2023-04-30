@@ -23,7 +23,7 @@ app_ui <- function(request) {
 
     shiny::navbarPage(
       windowTitle = paste0("REACH", toupper(golem::get_golem_options("country")) ,golem::get_golem_options("assessment_name"),"DASHBOARD"),
-      HTML('<a style="padding-left:10px;" class = "navbar-brand" href = "https://www.reach-initiative.org" target="_blank"><img src = "www/reach_logo.png" height = "50"></a><span class="navbar-text" style="font-size: 16px; color: #FFFFFF"><strong>',toupper(golem::get_golem_options("country")), ' ', golem::get_golem_options("assessment_name"),'DASHBOARD ', golem::get_golem_options("year"), '</strong></span>'),
+      HTML('<a style="padding-left:10px;" class = "navbar-brand" href = "https://www.reach-initiative.org" target="_blank"><img src = "www/reach_logo.png" height = "50"></a><span class="navbar-text" style="font-size: 16px; color: #FFFFFF"><strong>',toupper(golem::get_golem_options("country")), ' ', toupper(golem::get_golem_options("assessment_name")),'DASHBOARD ', golem::get_golem_options("year"), '</strong></span>'),
 
       mod_introduction_ui("introduction_1"),
       mod_Demographic_ui("Demographic_1"),

@@ -17,9 +17,9 @@ create_dashboard <- function(
     country ,
     assessment_name,
     year,
-    validated_analysis_file,
-    key_index_column,
-    stat_column,
+    analysis_file =NULL,
+    key_index_column=NULL,
+    stat_column=NULL,
     ...
 ) {
   with_golem_options(
@@ -35,7 +35,7 @@ create_dashboard <- function(
     golem_opts = list(country= country,
                       assessment_name =assessment_name,
                       year=year,
-                      validated_analysis_file =validated_analysis_file,
+                      analysis_file =analysis_file,
                       key_index_column =key_index_column,
                       stat_column =stat_column,
                       ...)

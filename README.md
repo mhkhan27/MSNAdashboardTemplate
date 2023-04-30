@@ -2,13 +2,15 @@ MSNA Dashboard Template
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-## MSNAdashboardTemplate
-
 <!-- badges: start -->
 
+[![contributions
+welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Generic
+badge](https://img.shields.io/badge/STATUS-UNDER%20DEVELOPMENT-%23007CE0)](https://shields.io/)
+
 <!-- badges: end -->
 
 The goal of MSNAdashboardTemplate is to …
@@ -179,8 +181,13 @@ information
 
 #### STEP 006. Create text file
 
-The function `create_text_input()` will create the an excel file to be
-shown in the dashboard `overview` page
+The function `create_text_input()` will create the an excel file with
+two tab (1. `README`, 2. `text_input`). Please read the readme and then
+fill the `text_input` tab.
+
+``` r
+create_text_input(output_path = "[PATH]")
+```
 
 #### STEP 005. Create summary
 
@@ -194,7 +201,7 @@ list of error/issue to fix before running the create_dashboard
 MSNAdashboardTemplate::create_dashboard(country = "Iraq",
                                assessment_name  = "McNA",
                                year = 2024,
-                               validated_analysis_file = validated_analysis_file,
+                               analysis_file = analysis_file,
                                key_index_column= key_index_column, 
                                stat_column = stat_column
                                ) 
@@ -205,17 +212,17 @@ MSNAdashboardTemplate::create_dashboard(country = "Iraq",
 In case you want to customize the dashboard, you can follow the
 following steps -
 
-#### Step 0.1.1 clone the repo
+#### Step 0.1.1 Clone the repo
 
-To customized the dashboard, you first needs to clone the repository
-from the github.
+To customized the dashboard, you first need to clone the repository from
+the [github](https://github.com/mhkhan27/MSNAdashboardTemplate).
 
-#### Step 0.1.1 understanding the repo
+#### Step 0.1.1 Understanding the repo
 
 Once you are done with the repo, now you need to understand the
 structure of repo. The repository is created using `golem` package.
 
-##### What is golem
+##### What is golem?
 
 The `golem` package is a framework for building and deploying
 production-ready Shiny applications in R. Shiny is a web application
@@ -280,70 +287,71 @@ subdirectories, each of which serves a specific purpose:
 9.  `README.md:` This file contains information about your package,
     including how to install and use it
 
-``` r
- fs::dir_tree()
-.
-├── R
-│   ├── app_config.R
-│   ├── app_server.R
-│   ├── app_ui.R
-│   ├── run_app.R
-│   ├── golem_utils_ui.R
-│   ├── golem_utils_server.R
-│   ├── 02_bind_loops.R
-│   ├── download_hdx_admin.R
-│   ├── utils_helpers.R
-│   ├── prepare_dap_for_dashboard.R
-│   ├── identifying_mismatch_strata_name_with_ocha_cod.R
-│   ├── rename_cod.R
-│   ├── create_analysis_from_dap.R
-│   ├── mod_introduction.R
-│   ├── mod_map.R
-│   ├── mod_Graph.R
-│   └── mod_Demographic.R
-├── MSNAdashboardTemplate.Rproj
-├── dev
-│   ├── 01_start.R
-│   ├── 02_dev.R
-│   ├── 03_deploy.R
-│   └── run_dev.R
-├── inst
-│   ├── app
-│   │   └── www
-│   │       ├── favicon.ico
-│   │       └── reach_logo.png
-│   └── golem-config.yml
-├── man
-│   ├── figures
-│   │   └── README-pressure-1.png
-│   ├── download_hdx_adm.Rd
-│   ├── write_mismatched_strata.Rd
-│   ├── write_dap_for_dashboard.Rd
-│   ├── write_renamed_ocha_admin_name.Rd
-│   └── create_dashboard.Rd
-├── DESCRIPTION
-├── NAMESPACE
-├── LICENSE
-├── LICENSE.md
-├── README.Rmd
-├── README.md
-├── tests
-│   ├── testthat
-│   │   ├── test-golem_utils_ui.R
-│   │   ├── test-golem_utils_server.R
-│   │   ├── test-download_hdx_admin.R
-│   │   ├── test-utils_helpers.R
-│   │   ├── test-mod_map.R
-│   │   ├── test-mod_Graph.R
-│   │   └── test-mod_Demographic.R
-│   └── testthat.R
-├── style.css
-├── app.R
-├── recommendatio.html
-└── data-raw
-    ├── admin_mismatch_fix.xlsx
-    └── data_diagnosis.xlsx
-```
+<!-- -->
+
+    .
+    ├── R
+    │   ├── app_config.R
+    │   ├── app_server.R
+    │   ├── app_ui.R
+    │   ├── run_app.R
+    │   ├── golem_utils_ui.R
+    │   ├── golem_utils_server.R
+    │   ├── 02_bind_loops.R
+    │   ├── download_hdx_admin.R
+    │   ├── utils_helpers.R
+    │   ├── prepare_dap_for_dashboard.R
+    │   ├── identifying_mismatch_strata_name_with_ocha_cod.R
+    │   ├── rename_cod.R
+    │   ├── create_analysis_from_dap.R
+    │   ├── mod_introduction.R
+    │   ├── mod_map.R
+    │   ├── mod_Graph.R
+    │   ├── mod_Demographic.R
+    │   └── create_text_file.R
+    ├── MSNAdashboardTemplate.Rproj
+    ├── dev
+    │   ├── 01_start.R
+    │   ├── 02_dev.R
+    │   ├── 03_deploy.R
+    │   └── run_dev.R
+    ├── inst
+    │   ├── app
+    │   │   └── www
+    │   │       ├── favicon.ico
+    │   │       └── reach_logo.png
+    │   └── golem-config.yml
+    ├── man
+    │   ├── figures
+    │   │   └── README-pressure-1.png
+    │   ├── download_hdx_adm.Rd
+    │   ├── write_mismatched_strata.Rd
+    │   ├── write_dap_for_dashboard.Rd
+    │   ├── write_renamed_ocha_admin_name.Rd
+    │   └── create_dashboard.Rd
+    ├── DESCRIPTION
+    ├── NAMESPACE
+    ├── LICENSE
+    ├── LICENSE.md
+    ├── README.Rmd
+    ├── README.md
+    ├── tests
+    │   ├── testthat
+    │   │   ├── test-golem_utils_ui.R
+    │   │   ├── test-golem_utils_server.R
+    │   │   ├── test-download_hdx_admin.R
+    │   │   ├── test-utils_helpers.R
+    │   │   ├── test-mod_map.R
+    │   │   ├── test-mod_Graph.R
+    │   │   └── test-mod_Demographic.R
+    │   └── testthat.R
+    ├── style.css
+    ├── app.R
+    ├── recommendatio.html
+    └── data-raw
+        ├── admin_mismatch_fix.xlsx
+        ├── data_diagnosis.xlsx
+        └── text_file.xlsx
 
 ##### Understanding Module
 
@@ -352,13 +360,13 @@ will be calling module. Each module represent a `tab` in the dashboard.
 Within the scripts, each module have two parts, 1. user interface (ui)
 2. server.
 
-#### Step 0.1.1 removing any module
+#### Step 0.1.1 Removing any module
 
 If you want to remove any module/tab from the dashboard, you can easily
 do it from `app_ui.R` and `app_server.R`. All you have to do is delete
 the module from both `app_ui` and `app_server`
 
-#### Step 0.1.1 adding any module
+#### Step 0.1.1 Adding any module
 
 If you want to add a new tab then you will need to create a module first
 and then add the module to the `app_ui.R` and `app_server.R`
@@ -368,7 +376,7 @@ and then add the module to the `app_ui.R` and `app_server.R`
 golem::add_module(name = "name_of_module1", with_test = TRUE) # Name of the module
 ```
 
-#### Step 0.1.1 changing any module
+#### Step 0.1.1 Changing any module
 
 You can change a specific tab without creating error in out tab by
 editing existing module. just make the changes in `mod_name_of_module1`
@@ -396,7 +404,7 @@ can hit `Ctrl + Shift + E` to run the CMD checks
 MSNAdashboardTemplate::create_dashboard(country = "Iraq",
                                assessment_name  = "McNA",
                                year = 2024,
-                               validated_analysis_file = validated_analysis_file,
+                               analysis_file = analysis_file,
                                key_index_column= key_index_column, 
                                stat_column = stat_column
                                ) 
