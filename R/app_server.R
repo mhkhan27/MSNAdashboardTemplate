@@ -7,6 +7,7 @@
 app_server <- function(input, output, session) {
   # Your application server logic
 
+
   mod_introduction_server("introduction_1")
   mod_Demographic_server("Demographic_1")
   mod_Graph_server("Graph_1")

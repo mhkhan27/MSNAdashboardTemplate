@@ -17,11 +17,14 @@ create_dashboard <- function(
     country ,
     assessment_name,
     year,
-    analysis_file =NULL,
+    validated_anaysis =NULL,
     key_index_column=NULL,
     stat_column=NULL,
     ...
 ) {
+
+
+
   with_golem_options(
     app = shinyApp(
       ui = app_ui,
@@ -35,7 +38,7 @@ create_dashboard <- function(
     golem_opts = list(country= country,
                       assessment_name =assessment_name,
                       year=year,
-                      analysis_file =analysis_file,
+                      validated_anaysis =validated_anaysis,
                       key_index_column =key_index_column,
                       stat_column =stat_column,
                       ...)
