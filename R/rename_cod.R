@@ -29,7 +29,10 @@ write_renamed_ocha_admin_name <- function(
   ocha_cod_level_3_only <- ocha_cod_level_3 |> dplyr::mutate(
     admin1 = snakecase::to_snake_case(!!rlang::sym(cod_admin1_name)),
     admin2 = snakecase::to_snake_case(!!rlang::sym(cod_admin2_name)),
-    admin3 = snakecase::to_snake_case(!!rlang::sym(cod_admin3_name))
+    admin3 = snakecase::to_snake_case(!!rlang::sym(cod_admin3_name)),
+    admin1_la = !!rlang::sym(cod_admin1_name),
+    admin2_la = !!rlang::sym(cod_admin2_name),
+    admin3_la = !!rlang::sym(cod_admin3_name)
 
   ) |> as.data.frame()
 

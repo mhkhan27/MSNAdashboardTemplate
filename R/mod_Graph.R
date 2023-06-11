@@ -122,7 +122,9 @@ mod_Graph_server <- function(id){
                                                values= dash_df()$stat,
                                                showlegend =T) |>
           plotly::layout(title =  unique(dash_df()$indicator),
-                         legend = list(orientation = 'h'))
+                         legend = list(orientation = 'h',
+                                       xanchor = "center",
+                                       x = 0.5))
       }
 
 
@@ -130,7 +132,7 @@ mod_Graph_server <- function(id){
                length(dash_df()$analysis_var_value_1) >5){
 
         ## Barchart
-        plotly::plot_ly(data = dash_df(),
+        plotly::plot_ly(data = dash_df(),height = 500,
                         type = "bar",
                         y = ~analysis_var_value_1,
                         x= ~stat,
@@ -147,7 +149,7 @@ mod_Graph_server <- function(id){
       else if( dash_df()$analysis_type[1] == "prop_select_multiple" & !is.na(dash_df()$analysis_type[1])){
 
         ## Barchart
-        plotly::plot_ly(data = dash_df(),
+        plotly::plot_ly(data = dash_df(),height = 500,
                         type = "bar",
                         y = ~analysis_var_value_1,
                         x= ~stat,

@@ -9,6 +9,10 @@
 #' @importFrom golem with_golem_options
 #'
 #'
+#'
+
+
+## add data and column_name_for_populaion_group in the parameter
 create_dashboard <- function(
     onStart = NULL,
     options = list(),
