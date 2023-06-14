@@ -2,15 +2,18 @@
 # validated analysis  -----------------------------------------------------
 
 ## Need to change, must be assume that I have only key_index and stat
-dashboard_input <- read.csv("data-raw/dashboard_input.csv") |> dplyr::mutate(
+validated_analysis <- read.csv("data-raw/validated_analysis_final.csv") |> dplyr::mutate(
 
   group_var_value_1 = dplyr::case_when(is.na(group_var_value_1) ~ "Overall",
                                        T~ group_var_value_1)) ## to be added in data
 
-dashboard_input <- dashboard_input |> dplyr::filter(analysis_type %in% c("prop_select_one","prop_select_multiple"))
+validated_analysis <- validated_analysis |> dplyr::filter(analysis_type %in% c("prop_select_one","prop_select_multiple"))
 
+unit_col <- validated_analysis |> dplyr::select(dplyr::starts_with("group_var_value_")) |> names()
 
-# dashboard_input <- dashboard_input |> dplyr::group_by(analysis_type,analysis_var_1, group_var_value_1) |>
+validated_analysis <- validated_analysis |> tidyr::unite(col = "group_var_value",unit_col,sep = " ~ ",remove = F)
+
+# validated_analysis <- validated_analysis |> dplyr::group_by(analysis_type,analysis_var_1, group_var_value_1) |>
 #   dplyr::arrange(-stat) |> dplyr::ungroup() |> as.data.frame()
 
 
@@ -72,6 +75,10 @@ for (i in strata_checking$pop_group ){
     completed_survey = dplyr::n()
   ) |> dplyr::rename(
     admin_name = grouping_variable
+  ) |> dplyr::mutate(
+    admin_label = dplyr::case_when(admin_level == "admin1"~ "admin1_la",
+                                   admin_level == "admin2"~ "admin2_la",
+                                   admin_level == "admin3"~ "admin3_la")
   )
 
 
@@ -99,27 +106,80 @@ for (i in strata_checking$pop_group ){
 
 ### Overview_map
 
-dom <- assessed_not_assesd[[1]] |> dplyr::filter(!is.na(completed_survey)) |> dplyr::pull(completed_survey)
+overview_map <- base_map
 
-bins <- c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
-pal <- leaflet::colorBin("YlOrRd", domain =dom , bins = bins,na.color = "#585858")
-
-overview_map <- base_map |>
-  leaflet::addPolygons(data = assessed_not_assesd[[1]],color = "#58585A",
-                       label = ~htmltools::htmlEscape(admin2_la),
-                       labelOptions = leaflet::labelOptions(noHide = F,
-                                                            sticky = T ,
-                                                            textOnly = TRUE,
-                                                            textsize = "11px"),
-                       popup = paste("Number of survey:", assessed_not_assesd[[1]]$completed_survey),
-                       weight = 2,dashArray = "3",fillColor = ~pal(assessed_not_assesd[[1]]$completed_survey),
-                       highlightOptions = leaflet::highlightOptions(weight = 5,
-                                                                    color = "#666",
-                                                                    dashArray = "",
-                                                                    fillOpacity = 0.7,
-                                                                    bringToFront = TRUE))
+for(i in 1:length(assessed_not_assesd)){
 
 
+  label <- assessed_not_assesd[[i]] |> dplyr::filter(!is.na(completed_survey)) |> dplyr::pull(admin_label)  |> unique()
+
+
+  dom <- assessed_not_assesd[[i]] |> dplyr::filter(!is.na(completed_survey)) |> dplyr::pull(completed_survey)
+
+  bins <- c(0, 10, 20, 50, 100, 200, 500, Inf)
+  pal <- leaflet::colorBin("YlOrRd", domain =dom , bins = bins,na.color = "#585858")
+
+  overview_map <- overview_map |>
+    leaflet::addPolygons(data = assessed_not_assesd[[i]],color = "#58585A",
+                         label = ~htmltools::htmlEscape(get(label)),
+                         labelOptions = leaflet::labelOptions(noHide = F,
+                                                              sticky = T ,
+                                                              textOnly = TRUE,
+                                                              textsize = "11px"),
+                         popup = paste( "<b>",assessed_not_assesd[[i]][[label]], "</b><br>",
+                           "<b>Number of survey:</b>", assessed_not_assesd[[i]]$completed_survey),
+                         weight = 2,dashArray = "3",fillColor = ~pal(assessed_not_assesd[[i]]$completed_survey),
+                         highlightOptions = leaflet::highlightOptions(weight = 5,
+                                                                      color = "#666",
+                                                                      dashArray = "",
+                                                                      fillOpacity = 0.7,
+                                                                      bringToFront = TRUE),
+                         group = names(assessed_not_assesd[i]))
+
+
+}
+
+overview_map <- overview_map |> leaflet::addLayersControl(
+  baseGroups = names(assessed_not_assesd),
+  options = leaflet::layersControlOptions(collapsed = FALSE))
+
+
+
+### Getting Strata + population
+look_for_strata<-list()
+for(i in strata_checking$pop_group){
+strata <- strata_checking |> dplyr::filter(pop_group == i)  |> pull(strata)
+
+key <- paste0(i, " ~ " , unique(HH_data[[strata]]))
+
+if(all(key %in% validated_analysis$group_var_value)) {key <- key}
+if(all(!key %in% validated_analysis$group_var_value)) {key <-  paste0(unique(HH_data[[strata]]), " ~ " , i)}
+
+
+look_for_strata[[i]]<- data.frame(
+   group_var_value = key,
+   pop_group = i,
+   strata = strata,
+   # group_val_value_1 = i,
+   admin_name = unique(HH_data[[strata]])
+ )
+
+}
+look_for_strata_df <- do.call("bind_rows",look_for_strata)
+
+
+######## Strata level data for MAP
+
+validated_analysis_strata <- validated_analysis |> dplyr::filter(group_var_value %in% look_for_strata_df$group_var_value)
+
+validated_analysis_strata <- validated_analysis_strata |> dplyr::left_join(look_for_strata_df)
+
+validated_analysis_strata |> names()
+
+validated_analysis_strata <- validated_analysis_strata |> left_join(strata_checking,by = c("pop_group","strata"))
+
+# validated_analysis_strata can be use in map tab, picker input for population group and indicator + choice and then leftjoing with
+# admin boundy ( based on admin_level column), finally show the result
 
 
 

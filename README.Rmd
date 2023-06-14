@@ -138,7 +138,7 @@ MSNAdashboardTemplate::write_renamed_ocha_admin_name(ocha_cod_level_3 = cntry_ad
 
 
 
-#### STEP 005. Create Analysis file [Ignore incase you have validated analysis file with key index]
+#### STEP 005. Recreate_analysis_file
 You can do analysis using any tools or package or whatever you want but make sure you have `key_index` and `state`
 
 ```{r eval =FALSE}

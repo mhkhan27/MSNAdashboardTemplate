@@ -21,16 +21,25 @@ mod_Graph_ui <- function(id){
              class = "ident-picker",
              shinyWidgets::pickerInput(ns("select_pop"),
                                               label = "Select population group:",
-                                              choices =  unique(dashboard_input$group_var_value_1),
-                                              selected = unique(dashboard_input$group_var_value_1)[1],
+                                              choices =  unique(validated_analysis$group_var_value_1),
+                                              selected = unique(validated_analysis$group_var_value_1)[1],
                                               multiple = F,
                                               options = shinyWidgets::pickerOptions(title = "Select", actionsBox = TRUE, liveSearch = TRUE)
            ),style="display:inline-block"),
 
+
+           # shinyWidgets::pickerInput(ns("select_analysis_level"),
+           #                           label = "Select analysis level:",
+           #                           choices =  ,
+           #                           selected = ,
+           #                           multiple = F,
+           #                           options = shinyWidgets::pickerOptions(title = "Select", actionsBox = TRUE, liveSearch = TRUE)
+           # ),style="display:inline-block"),
+
            tags$div(shinyWidgets::pickerInput(ns("select_sector"),
                                               label = "Select Sector:",
-                                              choices =  unique(dashboard_input$sector),
-                                              selected = unique(dashboard_input$sector)[1],
+                                              choices =  unique(validated_analysis$sector),
+                                              selected = unique(validated_analysis$sector)[1],
                                               multiple = F,
                                               options = shinyWidgets::pickerOptions(title = "Select", actionsBox = TRUE, liveSearch = TRUE)
            ),style="display:inline-block"),
@@ -62,7 +71,7 @@ mod_Graph_server <- function(id){
 
     # dashboard_input <- golem::get_golem_options("dashboard_input")
 
-    data_pop <- reactive({dashboard_input |> dplyr::filter(group_var_value_1 == input$select_pop)})
+    data_pop <- reactive({validated_analysis |> dplyr::filter(group_var_value_1 == input$select_pop)})
 
 
     sector_list <-shiny::reactive({
@@ -102,7 +111,7 @@ mod_Graph_server <- function(id){
 
     dash_df <- reactive({
 
-      dashboard_input |> dplyr::filter(group_var_value_1 == input$select_pop &
+      validated_analysis |> dplyr::filter(group_var_value_1 == input$select_pop &
                                                           sector == input$select_sector &
                                                           indicator == input$select_indicator)
 

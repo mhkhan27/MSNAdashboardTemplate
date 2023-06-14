@@ -26,8 +26,13 @@ analysis_indv <- illuminate::survey_analysis(df = INDV_data,weights = F,vars_to_
 analysis_group_by_indv <- illuminate::survey_analysis(df = INDV_data,weights = F,vars_to_analyze = cols_to_ana_indv,
                                                       disag = "pop_group" ) |> ungroup() |> select(stat,key_index)
 
+analysis_strata <- illuminate::survey_analysis(df = HH_data,weights = F,vars_to_analyze = cols_to_ana,
+                                           disag = c("stratification","pop_group") )
 
-analysis_file <- analysis_hh |> bind_rows(analysis_group_by) |> bind_rows(analysis_indv) |> bind_rows(analysis_group_by_indv)
+
+
+analysis_file <- analysis_hh |> bind_rows(analysis_group_by) |> bind_rows(analysis_indv) |>
+  bind_rows(analysis_group_by_indv) |> bind_rows(analysis_strata)
 
 
 analysis_file <- analysis_file[!duplicated(analysis_file$key_index ),]
@@ -58,7 +63,7 @@ analysis_table_filtered <- analysis_table |> dplyr::filter(analysis_var_1 %in% d
 ) |> dplyr::mutate(stat = dplyr::case_when(analysis_type %in% c("prop_select_one","prop_select_multiple") ~ round(stat*100,0),
             T~stat))
 
-write.csv(analysis_table_filtered ,"data-raw/dashboard_input.csv")
+write.csv(analysis_table_filtered ,"data-raw/validated_analysis.csv")
 
 
 ####
